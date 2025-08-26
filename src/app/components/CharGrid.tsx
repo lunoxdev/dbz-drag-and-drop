@@ -24,10 +24,12 @@ const CharGrid = () => {
         {data?.items.map((char) => (
           <div
             key={char.id}
-            className="flex flex-col justify-between items-center w-20 sm:w-full p-4 hover:scale-105 transition-transform duration-300"
+            className="flex flex-col justify-between items-center space-y-5 w-20 sm:w-full p-4 hover:scale-105 transition-transform duration-300"
           >
             <Image src={char.image} alt={char.name} width={120} height={120} />
-            <p>{char.name}</p>
+            <p className="bg-gradient-to-r from-red-700 via-red-400 to-red-700 inline-block text-transparent bg-clip-text font-bold text-base sm:text-2xl">
+              {char.name}
+            </p>
           </div>
         ))}
       </section>
