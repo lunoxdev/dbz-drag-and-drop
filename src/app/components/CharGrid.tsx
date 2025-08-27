@@ -5,6 +5,7 @@ import { useDragAndDrop } from "@formkit/drag-and-drop/react";
 import { useEffect, useRef } from "react";
 import { useCharStore } from "../stores/charStore";
 import dbzlogo from "./../../../public/dbz-logo.png";
+import { motion } from "motion/react";
 
 const CharGrid = () => {
   const { characters, setCharacters } = useCharStore();
@@ -77,11 +78,18 @@ const CharGrid = () => {
         {error && (
           <p className="col-span-full text-center">Error loading data</p>
         )}
-        {items.map((char) => (
-          <div
+        {items.map((char, index) => (
+          <motion.div
             key={char.id}
-            className="flex flex-col justify-between items-center space-y-5 w-20 sm:w-full p-4 hover:scale-105 transition-transform duration-300"
             data-label={char.name}
+            className="flex flex-col justify-between items-center space-y-5 w-20 sm:w-full p-4 hover:scale-105 transition-transform duration-300"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{
+              delay: index * 0.2,
+              duration: 0.7,
+              ease: "easeOut",
+            }}
           >
             <Image
               src={char.image}
@@ -93,7 +101,7 @@ const CharGrid = () => {
             <p className="bg-gradient-to-r from-yellow-600 via-yellow-400 to-yellow-600 inline-block text-transparent bg-clip-text font-bold text-base sm:text-2xl">
               {char.name}
             </p>
-          </div>
+          </motion.div>
         ))}
       </section>
     </main>
