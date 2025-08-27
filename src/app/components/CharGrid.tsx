@@ -60,9 +60,6 @@ const CharGrid = () => {
 
   return (
     <main className="font-sans flex justify-center items-center min-h-screen p-4 sm:p-8">
-      {/* Background */}
-      <div className="absolute inset-0 -z-10 h-full w-full items-center px-5 py-24 [background:radial-gradient(125%_125%_at_50%_10%,#000_40%,#a23_100%)]" />
-
       {/* Grid List */}
       <section
         ref={parentRef}
