@@ -94,8 +94,8 @@ const CharGrid = () => {
             <Image
               src={char.image}
               alt={char.name}
-              width={120}
-              height={120}
+              width={100}
+              height={100}
               priority={true}
             />
             <p className="bg-gradient-to-r from-yellow-600 via-yellow-400 to-yellow-600 inline-block text-transparent bg-clip-text font-bold text-base sm:text-2xl">
