@@ -4,6 +4,7 @@ import Image from "next/image";
 import { useDragAndDrop } from "@formkit/drag-and-drop/react";
 import { useEffect, useRef } from "react";
 import { useCharStore } from "../stores/charStore";
+import dbzlogo from "./../../../public/dbz-logo.png";
 
 const CharGrid = () => {
   const { characters, setCharacters } = useCharStore();
@@ -59,8 +60,15 @@ const CharGrid = () => {
   }, [items, setCharacters]);
 
   return (
-    <main className="font-sans flex justify-center items-center min-h-screen p-4 sm:p-8">
+    <main className="font-sans flex flex-col justify-center items-center p-2 sm:p-8">
       {/* Grid List */}
+      <Image
+        src={dbzlogo}
+        alt="Dragon Ball Z Logo"
+        width={150}
+        height={150}
+        className="w-auto h-auto mb-1 sm:mb-3"
+      />
       <section
         ref={parentRef}
         className="grid grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4 sm:gap-6"
