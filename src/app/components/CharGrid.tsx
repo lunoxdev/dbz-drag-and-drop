@@ -2,9 +2,15 @@ import { type APIResult, type Item } from "../types";
 import { useQuery } from "@tanstack/react-query";
 import Image from "next/image";
 import { useDragAndDrop } from "@formkit/drag-and-drop/react";
-import { useEffect, useState } from "react";
+import { useEffect, useRef } from "react";
+import { useCharStore } from "../stores/charStore";
 
 const CharGrid = () => {
+  const { characters, setCharacters } = useCharStore();
+  // Ref to keep track of previous order
+  const prevOrderRef = useRef<string>("");
+
+  // Fetch
   const fetchCharacters = async (): Promise<APIResult> => {
     const res = await fetch("https://dragonball-api.com/api/characters");
     return res.json();
@@ -15,23 +21,42 @@ const CharGrid = () => {
     queryFn: fetchCharacters,
   });
 
-  // Local state for charactes | TODO: use zustand for this
-  const [characters, setCharacters] = useState<Item[]>([]);
-
-  // Drag and drop Hook
+  // Enable sort drag-and-drop with current characters
+  // Based on doc https://drag-and-drop.formkit.com/#usage
   const [parentRef, items, setItems] = useDragAndDrop<HTMLDivElement, Item>(
     characters,
-    {
-      sortable: true,
-    }
+    { sortable: true }
   );
 
+  // Effect to load initial data
   useEffect(() => {
     if (data?.items) {
-      setCharacters(data.items);
-      setItems(data.items);
+      if (characters.length === 0) {
+        // First load using API data
+        setCharacters(data.items);
+        setItems(data.items);
+        // Update with initial order
+        prevOrderRef.current = data.items.map((item) => item.id).join(",");
+      } else {
+        // Keep saved order
+        setItems(characters);
+        prevOrderRef.current = characters.map((item) => item.id).join(",");
+      }
     }
-  }, [data, setItems]);
+  }, [data, setItems, setCharacters, characters]);
+
+  // Effect to detect changes
+  useEffect(() => {
+    if (items.length > 0) {
+      const currentOrder = items.map((item) => item.id).join(",");
+
+      // Update store only if the order really changed
+      if (currentOrder !== prevOrderRef.current) {
+        setCharacters(items);
+        prevOrderRef.current = currentOrder;
+      }
+    }
+  }, [items, setCharacters]);
 
   return (
     <main className="font-sans flex justify-center items-center min-h-screen p-4 sm:p-8">
